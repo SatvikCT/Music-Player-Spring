@@ -4,9 +4,7 @@ import com.spotify.application.model.Playlist;
 import com.spotify.application.model.Song;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -54,6 +52,25 @@ public class MusicPlayerService {
             }
         } catch (Exception e) {
             System.err.println("Error loading songs: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void saveCurrentPlaylistToCsv(String fileName) {
+        Playlist playlist = playlists.get(currentPlaylist);
+        List<Song> songs = playlist.getSongs();
+        String filePath = "src/main/resources/userPlaylists/" + fileName + ".csv";
+
+        try (FileWriter writer = new FileWriter(filePath)) {
+            for (Song song : songs) {
+                writer.append(song.getTitle())
+                        .append(',')
+                        .append(song.getArtist())
+                        .append('\n');
+            }
+            System.out.println("Playlist saved to " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error saving playlist to CSV: " + e.getMessage());
             e.printStackTrace();
         }
     }

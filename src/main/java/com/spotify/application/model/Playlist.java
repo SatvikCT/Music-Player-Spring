@@ -17,6 +17,9 @@ public class Playlist {
         initializeTopLists();
     }
 
+    public List<Song> getSongs() {
+        return songs;
+    }
     private void initializeTopLists() {
         dateTop.put(currentDate, new ArrayList<>());
         for (int i = 0; i < 10; i++) {
